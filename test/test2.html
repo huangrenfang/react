@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <!-- 生产环境中不建议使用 -->
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class Count extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {
+                    count:0
+                }
+                this.add = this.add.bind(this,10); //1
+            }
+            add(num){
+                this.setState({
+                    count:this.state.count+num //2
+                })
+            }
+            render(){
+                return(
+                <div>
+                    <h1>{this.state.count}</h1>
+                    <button onClick={this.add}>+1</button> 
+                </div>
+                )
+            }
+        }
+        ReactDOM.render(
+            <Count />,
+            document.getElementById("root")
+        )
+    </script>
+</body>
+</html>
