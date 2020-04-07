@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通信</title>
+</head>
+<body>
+    <div id="root">
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script type="text/babel">
+    // 不建议直接通过父组件获取自组件修改子组件状态
+    // 通过在子组件中设置ref，this.refs获取子组件，在子组件中设置修改状态内容是推荐的（推荐在组件内部修改，不推荐在外部修改）
+    // ref与class,name,id作用类似，通过这个起名的媒介来获取对应的元素，不仅是组件可以设置，所有的html标签都可以
+
+    //父组件与子组件通信是在父组件丽通过设置子组件ref来获取子组件内容
+    //子组件与父组件通信是在父组件里通过设置子组件的props（props下的属性命名自取，不名字）来将父组件的this传入子组件中
+
+    //子父组件通信修改状态值都推荐修改哪个组件就在那个组件里设置改变自身状态值都方法，不推荐外部修改内部状态值都方法
+
+    //非父子关系组件通信，通过共同的父组件做为中转站
+
+    //非同一页面通过localstorage 服务器 做中转站
+    // redux
+        class Fnc extends React.Component{
+            constructor(params){
+                super(params)
+                this.state = {
+                    number: 0
+                }
+                this.addAnother = this.addAnother.bind(this)
+            }
+            addAnother(){
+                this.setState({
+                    number: this.state.number+2
+                })   
+            }
+            render(){
+                return (
+                    <div>
+                        <h1>子组件</h1>
+                        <span>num:{this.state.number}</span>    
+                    </div>
+                )
+            }
+        }
+        class Parent extends React.Component{
+            constructor(params){
+                super(params)
+                this.add = this.add.bind(this)
+                this.addAnother = this.addAnother.bind(this)
+            }
+            add(){
+                this.refs.child.setState({
+                    number: this.refs.child.state.number+1
+                })
+            }
+            addAnother(){
+                this.refs.child.addAnother();
+            }
+            render(){
+                return(
+                    <div>
+                        <h1>父组件</h1>
+                        <button onClick={this.addAnother}>点击+1</button>
+                        子：<Fnc ref="child"></Fnc>
+                    </div>
+                )
+            }
+        }
+        ReactDOM.render(
+            <Parent />
+        ,document.getElementById('root'))
+    </script>
+</body>
+</html>
