@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>函数组件，类组件</title>
+    <title>倒计时</title>
 </head>
 <body>
     <div id="root">
@@ -13,33 +13,54 @@
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     <script type="text/babel">
-        class Fnc extends React.Component{
+        class Main extends React.Component{
+            constructor(params){
+                super(params)
+                this.change = this.change.bind(this)
+                this.state = {
+                    isShow: false
+                }
+            }
+            change(){
+                this.setState({
+                    isShow: !this.state.isShow
+                })
+            }
+            render(){
+                return(
+                    <div>
+                        <button onClick={this.change}>点击注册</button>    
+                        {this.state.isShow?<Clock/>:null}
+                    </div>
+                )
+            }
+        }
+        class Clock extends React.Component{
             constructor(params){
                 super(params)
                 this.state = {
                     count: 60
-                    
                 }
-                this.change = this.change.bind(this)
             }
-            change(){
+            componentDidMount(){
+                console.log("componentDidMount")
                 setInterval(()=>{
                     this.setState({
-                        count:this.state.count-1
+                        count: this.state.count-1
                     })
                 },1000)
             }
             render(){
                 console.log("render")
-                return (
+                return(
                     <div>
-                        <h1 onClick = {this.change}>{this.state.count}</h1>    
+                        <span>{this.state.count}秒后重新发送验证码</span>    
                     </div>
                 )
             }
         }
         ReactDOM.render(
-            <Fnc></Fnc>
+            <Main></Main>
         ,document.getElementById('root'))
     </script>
 </body>

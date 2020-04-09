@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>渲染</title>
+    <title>列表渲染</title>
 </head>
 <body>
     <div id="root">
@@ -13,32 +13,28 @@
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     <script type="text/babel">
-        class Com extends React.Component{
+        // react的列表渲染不像vue的v-for，如果不在变量中每个数组的item设置虚拟dom，而像下面这样的花，并不会像v-for一样会渲染出等同个数的dom元素，而是单个元素
+        class Fnc extends React.Component{
             constructor(params){
                 super(params)
-
-                this.state ={
-                    isLogin: false
-                }
             }
             render(){
-                // 将tpl打印出来会发现tpl是虚拟dom
-                let tpl;
-                if(this.state.isLogin){
-                    tpl = <h1>is true</h1>
-                }else{
-                    tpl = <h1>not true</h1>
+                let a = [3,2,1]
+                let arr = [];
+                for(let i=0;i<a.length;i++){
+                    arr[i] = <li key={i}>{a[i]}</li>
                 }
-
-                return(
+                return (
                     <div>
-                        {tpl}    
+                        <ul>
+                            {arr}
+                        </ul>    
                     </div>
                 )
             }
         }
         ReactDOM.render(
-            <Com></Com>
+            <Fnc></Fnc>
         ,document.getElementById('root'))
     </script>
 </body>

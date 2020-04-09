@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>函数组件，类组件</title>
+    <title>生命周期</title>
 </head>
 <body>
     <div id="root">
@@ -16,25 +16,28 @@
         class Fnc extends React.Component{
             constructor(params){
                 super(params)
-                this.state = {
-                    count: 60
-                    
-                }
-                this.change = this.change.bind(this)
             }
-            change(){
-                setInterval(()=>{
-                    this.setState({
-                        count:this.state.count-1
-                    })
-                },1000)
+            componentDidMount(){
+                //组件挂载后调用
+            }
+            componentDidUpdate(){
+                //组件更新后调用
+            }
+            shouldComponentUpdate(){
+                //判断组件是否需要更新组件，当组件需要更新后调用
+            }
+            componentWillUnmount(){
+                //组件卸载或销毁之前调用
+            }
+            static getDerivedStateFromProps(){
+                //调用render方法前调用，并且在初始挂载和后续更新后调用，返回一个对象，通过这个对象更新state
+            }
+            getSnapshotBeforeUpdate(){
+                //会在最近一次渲染输出之前调用，捕获更新之前当状态
             }
             render(){
-                console.log("render")
                 return (
-                    <div>
-                        <h1 onClick = {this.change}>{this.state.count}</h1>    
-                    </div>
+                    <h1>类组件</h1>
                 )
             }
         }

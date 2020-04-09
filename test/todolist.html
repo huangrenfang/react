@@ -3,83 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
-    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
-    <!-- 生产环境中不建议使用 -->
-    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <title>事件</title>
     <style>
-        #mainContent{
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-content: center;
-        }
-        th{
-            width: 200px;
+        .active{
+            background: red;
         }
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root">
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     <script type="text/babel">
-        class Content extends React.Component{
-            constructor(props){
-                super(props);
-                this.state = {
-                    data:[
-                        {name:"篮球",price:"100"},
-                        {name:"篮球",price:"100"},
-                        {name:"篮球",price:"100"},
-                        {name:"篮球",price:"100"}
-                    ],
-                    isChange:false
-                }
-                this.changeColor = this.changeColor.bind(this);
-            }
-            changeColor(){
-                this.setState({
-                    isChange:!this.state.isChange
-                })
-                console.log("触发了事件")
+        class Search extends React.Component{
+            constructor(params){
+                super(params)
             }
             render(){
-                let host = this.state.data.map((item,i)=>{
-                    return(
-                    <tr onClick={this.changeColor} style={{background:this.state.isChange?"red":"white"}} key={i}>
-                        <th><input type="checkbox"></input></th>
-                        <th>{item.name}</th>
-                        <th>{item.price}</th>
-                        <th><button >删除</button></th>
-                    </tr>
-                    )
-                })
                 return(
-                    <div id="mainContent">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>选择</th>
-                                    <th>商品名称</th>
-                                    <th>价格</th>
-                                    <th>删除</th>
-                                </tr>    
-                            </thead>
-                        
-                            <tbody>
-                                {host}
-                            </tbody>
-                        </table>
+                    <div>
+                        <label htmlFor="search">搜索</label>
+                        <input type="text" id="search"/>
+                    </div>
+                )
+            }
+        }
+        class Add extends React.Component{
+            constructor(params){
+                super(params)
+            }
+            render(){
+                return(
+                    <div>
+                        <label htmlFor="add">添加</label>
+                        <input type="text" id="add"/>
+                    </div>
+                )
+            }
+        }
+        class List extends React.Component{
+            constructor(params){
+                super(params)
+            }
+            render(){
+                return(
+                    <div>
+                        <ul>
+                            {
+                                this.props.list.map((item,index)=>( 
+                                item = 
+                                    <li key={item.id} className={item.isActive?'active':''}> 
+                                        <input type="checkbox" defaultChecked={item.isActive}/>
+                                        <span>{item.name}</span>
+                                        <button>del</button>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </div>
+                )
+            }
+        }
+        class Main extends React.Component{
+            constructor(params){
+                super(params)
+                this.state = {
+                    list:[
+                        {
+                            id:1,
+                            name:"吃饭",
+                            isActive: true
+                        },
+                        {
+                            id:2,
+                            name:"睡觉",
+                            isActive: false
+                        },
+                        {
+                            id:3,
+                            name:"打豆豆",
+                            isActive: false
+                        }
+                    ]    
+                }
+            }
+            changeActive(){
+                this.setState({
+                    isActive: !this.state.
+                })
+            }
+            render(){
+                return(
+                    <div>
+                        <h1>TodoList</h1>
+                        <Search/>
+                        <Add/>
+                        <List list={this.state.list}/>
                     </div>
                 )
             }
         }
         ReactDOM.render(
-            <Content/>,
-            document.getElementById("root")
-        )
+            <Main></Main>
+        ,document.getElementById('root'))
     </script>
 </body>
 </html>
