@@ -21,12 +21,16 @@
         class Search extends React.Component{
             constructor(params){
                 super(params)
+                this.change = this.change.bind(this)
+            }
+            change(e){
+                this.props.change(e.target.value)
             }
             render(){
                 return(
                     <div>
-                        <label htmlFor="search">搜索</label>
-                        <input type="text" id="search"/>
+                        <label htmlFor="search" >搜索</label>
+                        <input type="text" id="search" onChange={this.change}/>
                     </div>
                 )
             }
@@ -34,12 +38,25 @@
         class Add extends React.Component{
             constructor(params){
                 super(params)
+                this.state = {
+                    text: ''
+                }
+                this.add = this.add.bind(this)
+            }
+            add(){
+                console.log(this.props)
+                
+                if(this.refs.changText.value != ''){
+                    this.props.add(this.refs.changText.value)
+                }
+                this.refs.changText.value=''
             }
             render(){
                 return(
                     <div>
                         <label htmlFor="add">添加</label>
-                        <input type="text" id="add"/>
+                        <input type="text" id="add" ref ="changText"/>
+                        <button onClick={this.add}>add</button>
                     </div>
                 )
             }
@@ -48,6 +65,13 @@
             constructor(params){
                 super(params)
             }
+            changeActive(index){
+                // console.log(index)
+                this.props.changeActive(index)
+            }
+            del(index){
+                this.props.del(index)
+            }
             render(){
                 return(
                     <div>
@@ -55,10 +79,10 @@
                             {
                                 this.props.list.map((item,index)=>( 
                                 item = 
-                                    <li key={item.id} className={item.isActive?'active':''}> 
+                                    <li key={item.id} className={item.isActive?'active':''} onChange={this.changeActive.bind(this,index)}> 
                                         <input type="checkbox" defaultChecked={item.isActive}/>
                                         <span>{item.name}</span>
-                                        <button>del</button>
+                                        <button onClick={this.del.bind(this,index)}>del</button>
                                     </li>
                                 ))
                             }
@@ -87,21 +111,59 @@
                             name:"打豆豆",
                             isActive: false
                         }
-                    ]    
+                    ] 
                 }
+                this.changeActive = this.changeActive.bind(this)
+                this.add = this.add.bind(this)
+                this.del = this.del.bind(this)
+                this.change = this.change.bind(this)
             }
-            changeActive(){
+            change(value){
+                let list = [...this.state.list];
+                // console.log(list)
+                let todos = list.filter((item,index)=>{
+                    // console.log(item.name)
+                    return item.name.includes(value)
+                })
+                console.log(todos)
                 this.setState({
-                    isActive: !this.state.
+                    list:todos
+                })
+            }
+            del(index){
+                let list = [...this.state.list];
+                list.splice(index,1)
+                this.setState({
+                    list,
+                })
+            }
+            add(value){
+                let list = [...this.state.list];
+                list.push({
+                    id:new Date().getTime(),
+                    name: value,
+                    isActive: false
+                })
+                this.setState({
+                    list
+                })
+
+            }
+            changeActive(index){
+                let list = [...this.state.list];
+                list[index].isActive = !list[index].isActive
+                this.setState({
+                    list
                 })
             }
             render(){
+                console.log("render")
                 return(
                     <div>
                         <h1>TodoList</h1>
-                        <Search/>
-                        <Add/>
-                        <List list={this.state.list}/>
+                        <Search change={this.change}/>
+                        <Add add={this.add}/>
+                        <List list={this.state.list} changeActive={this.changeActive.bind(this)} del={this.del}/>
                     </div>
                 )
             }

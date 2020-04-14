@@ -1,13 +1,15 @@
+//rcc快捷创建React格式
+
 import React, { Component } from 'react';
 
-class Class1 extends Component {
+class inedx extends Component {
     render() {
         return (
             <div>
-                <h1>class1</h1>    
+                首页
             </div>
         );
     }
 }
 
-export default Class1;  
+export default inedx;

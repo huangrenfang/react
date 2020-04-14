@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-class Class2 extends Component {
+class Count extends Component {
     render() {
         return (
             <div>
-                <h1>class2</h1>
+                
             </div>
         );
     }
 }
 
-export default Class2;
+export default Count;
